@@ -1,21 +1,46 @@
 <template>
-  <div>
-      branch
-  </div>
+ 
+      <app-layout title="courses">
+         
+          <template #header>
+              <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+              List of Courses
+              </h2>
+
+          </template>
+          <div class="py-3" v-for="course in this.courses" :key="course.id">
+              <div class="mx-8 bg-white rounded shadow p-4">
+                  <div class="flex justify-between items-center">
+                      <div class="text-4xl">
+                          {{course.title}}
+                      </div>
+                      <div class="text-base">67 episode</div>
+                    </div>
+                  <div class="text-sm text-gray-500">{{course.description}}</div>
+                  <a href="#" class="bg-indigo-500 text-white px-2 py-1 text-sm mt-3 inline-block rounded hover:bg-indigo-700">See Course</a>
+              </div>
+          </div>
+      </app-layout>
+      
+  
 </template>
 
 <script>
-import AppLayouts from './../../Layouts/AppLayout'
+import AppLayout from './../../Layouts/AppLayout'
+
 export default {
 components:{
-    AppLayouts
+    AppLayout,
+    
 },
 mounted(){
-    console.log(courses);
+    console.log("*****************************=========",this.courses);
 },
-props:{
-    courses
-}
+props:[
+    'courses',
+    
+    ],
+
 
 }
 </script>
