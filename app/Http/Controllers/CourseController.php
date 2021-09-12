@@ -15,7 +15,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses=Course::all();
+        $courses=Course::with('user')->withcount('videos')->get();
         return Inertia::render('Courses/index',['courses'=>$courses]);
     }
 
@@ -48,7 +48,8 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        $course=Course::with('videos')->where('id',$id)->first();
+        return Inertia::render('Courses/show',['course'=>$course]);
     }
 
     /**

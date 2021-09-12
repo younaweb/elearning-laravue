@@ -1119,6 +1119,10 @@ select {
 	margin-left: 2rem;
 	margin-right: 2rem;
 }
+.my-3 {
+	margin-top: 0.75rem;
+	margin-bottom: 0.75rem;
+}
 .ml-3 {
 	margin-left: 0.75rem;
 }
@@ -1235,6 +1239,9 @@ select {
 }
 .h-20 {
 	height: 5rem;
+}
+.h-full {
+	height: 100%;
 }
 .min-h-screen {
 	min-height: 100vh;
