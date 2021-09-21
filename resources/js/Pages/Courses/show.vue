@@ -56,7 +56,7 @@
                 Watch
               </button>
             </div>
-           <progress-button :video-id='episode.id'/>
+           <progress-button :video-id='episode.id' :watched-video='watched'/>
           </li>
         </ul>
       </div>
@@ -75,10 +75,14 @@ export default {
     ProgressButton
   },
  
-  props: ["course"],
+  props: [
+    "course",
+    "watched"
+  ],
   data() {
     return {
       index: 0,
+      
     };
   },
   methods: {

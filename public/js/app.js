@@ -20787,17 +20787,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['videoId'],
+  data: function data() {
+    return {
+      isWatched: null,
+      watchedEp: this.watchedVideo
+    };
+  },
+  props: ['videoId', 'watchedVideo'],
   methods: {
     toggleWatchVideo: function toggleWatchVideo() {
+      var _this = this;
+
       axios.post("/togglewatched", {
         id: this.videoId
       }).then(function (response) {
-        console.log(response.data);
+        if (response) {
+          _this.isWatched = !_this.isWatched;
+        }
       })["catch"](function (error) {
         console.error("There was an error!", error);
       });
     }
+  },
+  computed: {
+    isWatchedVideo: function isWatchedVideo() {
+      for (var i = 0; i < this.watchedEp.length; i++) {
+        if (this.watchedEp[i].id == this.videoId) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+  },
+  mounted: function mounted() {
+    this.isWatched = this.isWatchedVideo;
   }
 });
 
@@ -20851,7 +20875,7 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_1__["default"],
     ProgressButton: _PrgressButton__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ["course"],
+  props: ["course", "watched"],
   data: function data() {
     return {
       index: 0
@@ -24685,7 +24709,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.toggleWatchVideo($props.videoId);
     })
-  }, " Finished ? ")]);
+  }, " Finished " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(this.isWatched ? '' : ' ?'), 1
+  /* TEXT */
+  )]);
 }
 
 /***/ }),
@@ -24848,10 +24874,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }, " Watch ", 8
         /* PROPS */
         , _hoisted_7)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_progress_button, {
-          "video-id": episode.id
+          "video-id": episode.id,
+          "watched-video": $props.watched
         }, null, 8
         /* PROPS */
-        , ["video-id"])])]);
+        , ["video-id", "watched-video"])])]);
       }), 128
       /* KEYED_FRAGMENT */
       ))])])];
