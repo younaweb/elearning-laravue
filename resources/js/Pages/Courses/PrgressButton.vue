@@ -15,26 +15,50 @@
       "
       @click="toggleWatchVideo(videoId)"
     >
-      Finished ?
+      Finished  {{ this.isWatched  ? '' : ' ?'}} 
     </button>
+ 
   </div>
 </template>
 
 <script>
 export default {
-  props: ['videoId'],
+  data(){
+    return{
+      isWatched: null,
+      watchedEp:this.watchedVideo
+    }
+  },
+  props: ['videoId','watchedVideo'],
   methods: {
   
     toggleWatchVideo() {
       axios
         .post("/togglewatched", { id: this.videoId })
         .then((response) => {
-          console.log(response.data)
+          if (response){
+            this.isWatched=!this.isWatched;
+          }
+          
         })
         .catch((error) => {
           console.error("There was an error!", error);
         });
     },
+  },
+  computed:{
+    isWatchedVideo(){
+     for(var i=0; i < this.watchedEp.length; i++){
+        if( this.watchedEp[i].id == this.videoId){
+          return true
+        }
+      }
+      return false
+    }
+  },
+  mounted(){
+    this.isWatched = this.isWatchedVideo;
+    
   },
 };
 </script>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\VideoUser;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,6 +17,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses=Course::with('user')->withcount('videos')->get();
+        
         return Inertia::render('Courses/index',['courses'=>$courses]);
     }
 
@@ -29,13 +31,38 @@ class CourseController extends Controller
         //
     }
 
-
-    public function togglewatched(Request $request)
+    public function show($id)
     {
-        $video_id=$request->id;
+        $course=Course::with('videos')->where('id',$id)->first();
+        $watch=auth()->user()->Videos;
+        $watched=[];
+        foreach($watch as $w){
+            //dd($w);
+
+            if($w->course_id==$id){
+                $watched[]=$w;
+            }
+        }
+        //dd($watched);
+        return Inertia::render('Courses/show',['course'=>$course,'watched'=>$watched]);
+    }
+
+
+    public function togglewatched()
+    {
+        $video_id=request()->id;
         $user=auth()->user()->id;
-        //$user->videos()->toggle($video_id);
-        return $user->videos();
+     
+        $exist=VideoUser::where([['video_id',$video_id],['user_id',$user]])->first();
+    if($exist){
+            $tog=VideoUser::where([['video_id',$video_id],['user_id',$user]])->delete();
+        }else{
+            $tog=VideoUser::create([
+                'video_id'=>$video_id,
+                'user_id'=>$user
+            ]);
+        }
+        return $tog;
     }
 
     /**
@@ -55,11 +82,7 @@ class CourseController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $course=Course::with('videos')->where('id',$id)->first();
-        return Inertia::render('Courses/show',['course'=>$course]);
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
